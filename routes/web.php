@@ -1,5 +1,9 @@
+// routes/web.php
+
 <?php
 
+// 🔽 追加
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TweetController;
 use App\Http\Controllers\TweetLikeController;
@@ -20,6 +24,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('tweets', TweetController::class);
     Route::post('/tweets/{tweet}/like', [TweetLikeController::class, 'store'])->name('tweets.like');
     Route::delete('/tweets/{tweet}/like', [TweetLikeController::class, 'destroy'])->name('tweets.dislike');
+    // 🔽 追加
+    Route::resource('tweets.comments', CommentController::class);
 });
 
 require __DIR__ . '/auth.php';
