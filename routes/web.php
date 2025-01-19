@@ -1,5 +1,3 @@
-// routes/web.php
-
 <?php
 
 // 🔽 追加
