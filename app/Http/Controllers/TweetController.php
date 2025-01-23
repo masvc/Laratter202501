@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreTweetRequest;
+// 🔽 追加
+use App\Http\Requests\UpdateTweetRequest;
 use App\Models\Tweet;
 use Illuminate\Http\Request;
-use Auth;
-// 🔽 追加
 use App\Services\TweetService;
 
 
@@ -41,17 +42,14 @@ class TweetController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreTweetRequest $request)
     {
-        $request->validate([
-            'tweet' => 'required|max:255',
-        ]);
-
-        // 🔽 編集
-        $this->tweetService->createTweet($request);
+        // バリデーションは削除
+        $tweet = $this->tweetService->createTweet($request);
 
         return redirect()->route('tweets.index');
     }
+
 
     /**
      * Display the specified resource.
@@ -72,17 +70,14 @@ class TweetController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Tweet $tweet)
+    public function update(UpdateTweetRequest $request, Tweet $tweet)
     {
-        $request->validate([
-            'tweet' => 'required|max:255',
-        ]);
-
-        // 🔽 編集
-        $this->tweetService->updateTweet($request, $tweet);
+        // バリデーションは削除
+        $updatedTweet = $this->tweetService->updateTweet($request, $tweet);
 
         return redirect()->route('tweets.show', $tweet);
     }
+
 
     /**
      * Remove the specified resource from storage.
