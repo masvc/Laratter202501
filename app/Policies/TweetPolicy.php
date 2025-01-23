@@ -13,7 +13,8 @@ class TweetPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        // 🔽 追加
+        return true;
     }
 
     /**
@@ -21,7 +22,8 @@ class TweetPolicy
      */
     public function view(User $user, Tweet $tweet): bool
     {
-        return false;
+        // 🔽 追加
+        return true;
     }
 
     /**
@@ -29,7 +31,8 @@ class TweetPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        // 🔽 追加
+        return true;
     }
 
     /**
@@ -37,7 +40,7 @@ class TweetPolicy
      */
     public function update(User $user, Tweet $tweet): bool
     {
-        return false;
+        return $user->id === $tweet->user_id;
     }
 
     /**
@@ -45,7 +48,7 @@ class TweetPolicy
      */
     public function delete(User $user, Tweet $tweet): bool
     {
-        return false;
+        return $user->id === $tweet->user_id;
     }
 
     /**
