@@ -6,15 +6,26 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 // 🔽 追加
 use App\Models\Tweet;
+use App\Services\TweetService;
 
 class TweetController extends Controller
 {
+    // 🔽 追加
+    protected $tweetService;
+
+    // 🔽 追加
+    public function __construct(TweetService $tweetService)
+    {
+        $this->tweetService = $tweetService;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $tweets = Tweet::with('user')->latest()->get();
+        // 🔽 編集
+        $tweets = $this->tweetService->allTweets();
         return response()->json($tweets);
     }
 
@@ -26,7 +37,10 @@ class TweetController extends Controller
         $request->validate([
             'tweet' => 'required|max:255',
         ]);
-        $tweet = $request->user()->tweets()->create($request->only('tweet'));
+
+        // 🔽 編集
+        $tweet = $this->tweetService->createTweet($request);
+
         return response()->json($tweet, 201);
     }
 
@@ -46,17 +60,19 @@ class TweetController extends Controller
         $request->validate([
             'tweet' => 'required|string|max:255',
         ]);
-        $tweet->update($request->all());
 
-        return response()->json($tweet);
+        // 🔽 編集
+        $updatedTweet = $this->tweetService->updateTweet($request, $tweet);
+
+        return response()->json($updatedTweet);
     }
-
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Tweet $tweet)
     {
-        $tweet->delete();
+        // 🔽 編集
+        $this->tweetService->deleteTweet($tweet);
         return response()->json(['message' => 'Tweet deleted successfully']);
     }
 }
